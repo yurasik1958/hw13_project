@@ -1,0 +1,42 @@
+{% extends 'quotes/base.html' %}
+{% load extract %}
+
+{% block content %}
+
+<h3><a href="/author-view/1">Autors</a></h3>
+
+<div class="row">
+    <div class="col-md-8">
+        {% for author in authors %}
+        <div class="quote" itemscope="" itemtype="http://schema.org/CreativeWork">
+            <h4 class="author-title"><a class="author" href="/author/{{author.id}}">{{author.fullname}}</a></h4>
+            <p>
+                <strong>Born:</strong> 
+                <span class="author-born-date">{{author.born_date}}</span> 
+                <span class="author-born-location">{{author.born_location}}</span>
+            </p>
+        </div>
+        {% endfor %}
+        <nav>
+            <ul class="pager">
+                
+                <li class="previous">
+                    <a {% if not authors.has_previous %} style="display: none;" {% endif %}
+                        href="{% if authors.has_previous %} {% url 'quotes:author-view' authors.previous_page_number %} {% else %} # {% endif %}">
+                        <span aria-hidden="true">←</span> Previous
+                    </a>
+                </li>
+
+                <li class="next">
+                    <a {% if not authors.has_next %} style="display: none;" {% endif %}
+                        href="{% if authors.has_next %} {% url 'quotes:author-view' authors.next_page_number %} {% else %} # {% endif %}">
+                        Next <span aria-hidden="true">→</span>
+                    </a>
+                </li>
+                
+            </ul>
+        </nav>
+    </div>
+</div>
+
+{% endblock %}

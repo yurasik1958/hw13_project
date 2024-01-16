@@ -1,0 +1,79 @@
+{% extends 'quotes/base.html' %}
+{% load extract %}
+
+{% block content %}
+
+{% if tag_name %}
+<h3>Viewing tag: <a href="/tag/{{tag_name}}/page/1">{{tag_name}}</a></h3>
+{% endif %}
+
+<div class="row">
+    <div class="col-md-8">
+        {% for quote in quotes %}
+        <div class="quote" itemscope="" itemtype="http://schema.org/CreativeWork">
+            <span class="text" itemprop="text">
+                {{quote.quote}}
+            </span>
+            <span>by <small class="author" itemprop="author">{{quote.author_id|author}}</small>
+                <a href="/author/{{quote.author_id}}">(about)</a>
+            </span>
+            <div class="tags">
+                Tags:
+                {% for tag in quote|tags %}
+                <a class="tag" href="/tag/{{tag}}/page/1">{{tag}}</a>
+                {% endfor %}
+            </div>
+        </div>
+        {% endfor %}
+        <nav>
+            <ul class="pager">
+                
+                <li class="previous">
+                    <a {% if not quotes.has_previous %} style="display: none;" {% endif %}
+                        {% if tag_name %}
+                            href="{{prev_page}}">
+                        {% else %}
+                            href="{% if quotes.has_previous %} {% url 'quotes:main_paginate' quotes.previous_page_number %} {% else %} # {% endif %}">
+                        {% endif %}
+                        <span aria-hidden="true">←</span> Previous
+                    </a>
+                </li>
+                
+                
+                <li class="next">
+                    <a {% if not quotes.has_next %} style="display: none;" {% endif %}
+                        {% if tag_name %}
+                            href="{{next_page}}">
+                        {% else %}
+                            href="{% if quotes.has_next %} {% url 'quotes:main_paginate' quotes.next_page_number %} {% else %} # {% endif %}">
+                        {% endif %}
+                        Next <span aria-hidden="true">→</span>
+                    </a>
+                </li>
+                
+            </ul>
+        </nav>
+    </div>
+    <div class="col-md-4 tags-box">
+        {% if user.is_authenticated %}
+        <div style="padding-bottom: 8px;">
+            <a href="{% url 'quotes:author-view' %}" class="btn btn-primary">View my Authors</a>
+            <a href="{% url 'quotes:author-add' %}" class="btn btn-primary">Add new Author</a>
+        </div>
+        <div>
+            <a href="{% url 'quotes:quote-view' %}" class="btn btn-primary">View  my  Quote</a>
+            <a href="{% url 'quotes:quote-add' %}" class="btn btn-primary">Add  new  Quote</a>
+        </div>
+        {% endif %}
+
+        <h2>Top Ten tags</h2>
+        
+        {% for tag in top_tags %}
+        <div class="tag-item">
+            <a class="tag" style="font-size: {{tag.tag_size}}px" href="/tag/{{tag.tag_name}}/page/1">{{tag.tag_name}}</a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

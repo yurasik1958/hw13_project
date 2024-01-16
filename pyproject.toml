@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "hw13-project"
+version = "0.1.0"
+description = ""
+authors = ["NikYurchik <14urka@gmail.com>"]
+readme = "README.md"
+packages = [{include = "hw13_project"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+sqlalchemy = "^2.0.20"
+psycopg2 = "^2.9.7"
+alembic = "^1.11.3"
+django = "^4.2.4"
+pillow = "^10.0.0"
+python-dateutil = "^2.8.2"
+django-environ = "^0.11.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
